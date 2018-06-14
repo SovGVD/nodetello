@@ -380,6 +380,9 @@ const dgram = require('dgram');
 const tello_control = dgram.createSocket('udp4');
 const tello_video = dgram.createSocket('udp4');
 
+const fs = require('fs');
+var video_stream = fs.createWriteStream('video.h264');
+
 tello_control.on('error', (err) => {
   console.log(`tello_control error:\n${err.stack}`);
   tello_control.close();
@@ -403,8 +406,10 @@ setInterval(function () { _timerTask(); }.bind(this),20);
 		setTimeout(function() { initVideo(); }.bind(this),1000);
 	});
 
-	tello_video.on('message', (msg, rinfo) => {
-	  console.log(`tello_video got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	tello_video.on('message', function (msg, rinfo) {
+	  //console.log(`tello_video got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	  //console.log(msg)
+	  video_stream.write(msg.slice(2));
 	});
 
 	tello_video.on('listening', () => {
