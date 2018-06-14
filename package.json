@@ -1,0 +1,20 @@
+{
+  "name": "nodetello",
+  "version": "0.0.1",
+  "description": "Ryze Tello Node.JS lib",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "drone",
+    "ryze",
+    "tello",
+    "tello"
+  ],
+  "author": "Gleb Devyatkin",
+  "license": "MIT"
+}
