@@ -149,7 +149,6 @@ function _calcCRC8(buf, size) {
 function _buildPacket(pacType, cmdID, seqID, data) {
 	var size = data?data.length:0;
 	var size = 11 + size;
-	//console.log("size:", size)
 	bb = Buffer.alloc(size)
 	bb.writeUInt8(0xCC,0)
 	bb.writeUInt16LE(size << 3,1)
@@ -163,8 +162,6 @@ function _buildPacket(pacType, cmdID, seqID, data) {
 	}
 	crc16 = _calcCRC16([...bb], size - 2);
 	bb.writeUInt16LE(crc16, size-2)
-	//bb.flip()
-	//console.log("BUF:", bb);
 	return bb
 }
 
@@ -189,13 +186,12 @@ function _parsePacket(buf) {
 			var seqID    = bb.readUInt16LE(7);
 			var dataSize = size - 11;
 			var data     = false;
-			//bb.set_position(size - 2)
 			var crc16    = bb.readUInt16LE(size - 2);
 			var calcCRC16=_calcCRC16([...bb], size - 2);
 			if (crc16 != calcCRC16) {
 				console.log ('wrong CRC16', crc16, calcCRC16);
 			}
-			console.log( 'pt:',pacType, 'cmd:', cmdID, 'seq:', seqID, 'data_sz:', dataSize, 'bufsize:', buf.length);
+			//console.log( 'pt:',pacType, 'cmd:', cmdID, 'seq:', seqID, 'data_sz:', dataSize, 'bufsize:', buf.length);
 		} else {
 			if (mark == 0x63) {
 				var ack = Buffer.alloc(11);
@@ -240,7 +236,6 @@ function _sendCmd(pacType, cmdID, data) {
 		pp.writeUInt32BE(stickData >> 8, 0); //write the high order bits (shifted over)
 		pp.writeUInt32BE(stickData & 0x00ff, 4); //write the low order bits
 		pp.swap64();	// BE to LE?
-		//pp.flip()
 		
 		// get 48bit data only
 		bb.write(pp.slice(0, 6).toString(),0);
@@ -254,7 +249,6 @@ function _sendCmd(pacType, cmdID, data) {
 		seq = seqID
 		now = new Date()
 		bb = Buffer.alloc(15)
-		//bb.clear()
 		bb.writeUInt8(0x00,0)
 		bb.writeUInt16LE(now.getYear(),1)
 		bb.writeUInt16LE(now.getMonth(),3)
@@ -262,7 +256,7 @@ function _sendCmd(pacType, cmdID, data) {
 		bb.writeUInt16LE(now.getHours(),7)
 		bb.writeUInt16LE(now.getMinutes(),9)
 		bb.writeUInt16LE(now.getSeconds(),11)
-		bb.writeUInt16LE(now.microsecond & 0xffff,13)
+		bb.writeUInt16LE(now.getMilliseconds()*1000 & 0xffff,13)
 		seqID = seqID + 1
 	} else if (cmdID == tello.commands.TELLO_CMD_REQ_VIDEO_SPS_PPS) {
 		console.log("to send:", "TELLO_CMD_REQ_VIDEO_SPS_PPS")
@@ -379,9 +373,15 @@ function _timerTask() {
 const dgram = require('dgram');
 const tello_control = dgram.createSocket('udp4');
 const tello_video = dgram.createSocket('udp4');
+const { spawn } = require('child_process');
+
+var cmd = 'mplayer';
+var args = [ '-fps', '35', '-' ];
+var video_player = spawn(cmd, args);
 
 const fs = require('fs');
 var video_stream = fs.createWriteStream('video.h264');
+var video_stream_raw = fs.createWriteStream('video.base64.raw');
 
 tello_control.on('error', (err) => {
   console.log(`tello_control error:\n${err.stack}`);
@@ -407,9 +407,9 @@ setInterval(function () { _timerTask(); }.bind(this),20);
 	});
 
 	tello_video.on('message', function (msg, rinfo) {
-	  //console.log(`tello_video got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-	  //console.log(msg)
 	  video_stream.write(msg.slice(2));
+	  video_stream_raw.write(msg.toString('base64')+"\n\n");
+	    video_player.stdin.write(msg.slice(2));
 	});
 
 	tello_video.on('listening', () => {

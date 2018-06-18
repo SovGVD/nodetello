@@ -63,3 +63,5 @@ typings/
 log.log
 video.h264
 video.mp4
+video.base64.raw
+tests/
