@@ -376,7 +376,7 @@ const tello_video = dgram.createSocket('udp4');
 const { spawn } = require('child_process');
 
 var cmd = 'mplayer';
-var args = [ '-fps', '35', '-' ];
+var args = [ '-fps', '30', '-' ];
 var video_player = spawn(cmd, args);
 
 const fs = require('fs');
