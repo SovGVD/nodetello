@@ -15,5 +15,8 @@
     "tello"
   ],
   "author": "Gleb Devyatkin",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^5.2.1"
+  }
 }
