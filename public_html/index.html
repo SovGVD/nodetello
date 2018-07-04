@@ -83,8 +83,8 @@ function connect() {
 			processFrame(data);
 		};
 		ws_video.onopen = function () {
-			setInterval(getFrame,1000/FPS);
-			//getFrame();
+			//setInterval(getFrame,1000/FPS);
+			getFrame();
 		};
 		ws_video.onerror = function () {
 			ws_video.close();
