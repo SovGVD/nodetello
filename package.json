@@ -1,6 +1,6 @@
 {
   "name": "nodetello",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Ryze Tello Node.JS lib based on PyTello",
   "main": "app.js",
   "directories": {
@@ -12,7 +12,10 @@
   "keywords": [
     "drone",
     "ryze",
-    "tello"
+    "tello",
+    "node.js",
+    "video stream",
+    "h264"
   ],
   "author": "Gleb Devyatkin",
   "license": "MIT",

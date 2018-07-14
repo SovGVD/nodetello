@@ -31,7 +31,7 @@ Init process is basic at that moment:
  - start http server and websocket
 
 ## Web client
-web client must be available on http://127.0.0.1:8080 and show awful trash video from drone with huge lag =(
+Web client must be available on http://127.0.0.1:8080 and show almost fine video from drone with 0.5 secods lag.
 
 ## Convert video
-video stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpeg -i TIMESTAMP.h264 -crf 20 video.mp4`
+Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpeg -i TIMESTAMP.h264 -crf 20 video.mp4`
