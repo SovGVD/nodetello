@@ -1,5 +1,5 @@
 # Ryze Tello drone Node.JS library
-Based on [PyTello](https://bitbucket.org/PingguSoft/pytello)
+Based on [PyTello](https://bitbucket.org/PingguSoft/pytello), [TelloLib](https://github.com/Kragrathea/TelloLib) and [the tello Go](https://github.com/SMerrony/tello)
 
 ## How to
 ```
