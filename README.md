@@ -35,3 +35,27 @@ Web client must be available on http://127.0.0.1:8080 and show almost fine video
 
 ## Convert video
 Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpeg -i TIMESTAMP.h264 -crf 20 video.mp4`
+
+## Flight data and log
+
+### Flight data
+ - altitude
+ - version
+ - speed
+ - fly_time
+ - wifi
+ - other...
+
+### Log
+ - 29 - MVO (not all fields)
+ - 2048 - IMU (not all fields)
+ - 16
+ - 1000
+ - 1001
+ - 1002
+ - 2064
+ - 2208
+ - 10086
+ - 10085
+ - 32768
+ 
