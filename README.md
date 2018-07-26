@@ -47,12 +47,15 @@ Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpe
  - other...
 
 ### Log
- - 29 - MVO (not all fields)
- - 2048 - IMU (not all fields)
- - 16
+ - 29 - MVO (position)
+ - 2048 - IMU + ANGLES (pitch, roll, yaw)
+ - 16 - ULTRASONIC (basicaly duplicate IMU data)
+ - 112
  - 1000
  - 1001
  - 1002
+ - 1710
+ - 1712
  - 2064
  - 2208
  - 10086
