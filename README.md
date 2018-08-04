@@ -17,6 +17,15 @@ var drone = new NodeTello();
 drone.save_video_path = "./video/";
 // set callback for video feed
 drone.tello_video_output = function (h264) { webclient.h264encoder_in(h264); };
+// config drone telemetry (drone -> node.js -> browser)
+drone.tello_telemetry_config = { 
+   px: "MVO.PX",
+   py: "MVO.PY",
+   pz: "MVO.PZ"
+};
+// set callback for telemetry feed
+drone.tello_telemetry_output = function (data) { webclient.telemetry(data); };
+
 // lets go!
 drone.init();
 ```
@@ -27,6 +36,7 @@ Init process is basic at that moment:
  - get some settings/values (version and altitude limit)
  - set settings (stick position)
  - init video feed
+ - init log and status receive and parse
  - start video transcode (required ffmpeg!)
  - start http server and websocket
 

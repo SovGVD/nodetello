@@ -1,6 +1,6 @@
 {
   "name": "nodetello",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Ryze Tello Node.JS lib based on PyTello",
   "main": "app.js",
   "directories": {
