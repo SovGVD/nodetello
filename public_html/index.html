@@ -143,6 +143,21 @@ function initCanvas() {
 //	}
 }
 
+var keyboardMap = { };
+function initKeyboard() {
+	document.body.onkeydown = document.body.onkeyup = function (e) { 
+		e.preventDefault();
+		keyboardMap[e.code] = (e.type=='keydown'?true:false); 
+		keyboardEvent(e);
+	};
+}
+function keyboardEvent(e) {
+	console.log(keyboardMap);
+	return false;
+}
+
+
+initKeyboard();
 initCanvas();
 init3D();
 connect();
