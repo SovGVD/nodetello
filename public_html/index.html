@@ -16,6 +16,29 @@
 			<div id="videoFeed"></div>
 		</div>
 		<div class="col-md-6">
+			<div id="settings">
+				<select class="settings ev" id="settings-ev">
+					<option value="-3.0">-3.0</option>
+					<option value="-2.7">-2.7</option>
+					<option value="-2.3">-2.3</option>
+					<option value="-2.0">-2.0</option>
+					<option value="-1.7">-1.7</option>
+					<option value="-1.3">-1.3</option>
+					<option value="-1.0">-1.0</option>
+					<option value="-0.7">-0.7</option>
+					<option value="-0.3">-0.3</option>
+					<option value="0.0" selected>0</option>
+					<option value="+0.3">+0.3</option>
+					<option value="+0.7">+0.7</option>
+					<option value="+1.0">+1.0</option>
+					<option value="+1.3">+1.3</option>
+					<option value="+1.7">+1.7</option>
+					<option value="+2.0">+2.0</option>
+					<option value="+2.3">+2.3</option>
+					<option value="+2.7">+2.7</option>
+					<option value="+3.0">+3.0</option>
+				</select>
+			</div>
 			<div id="telemetryFeed"></div>
 			<div id="telemetryGraph"></div>
 		</div>
@@ -28,7 +51,6 @@ var FPS=30;
 var ws_video = false;
 var ws_telemetry = false; var telemetry_obj = document.getElementById("telemetryFeed");
 var c,ctx;
-//var input_data = 'h264_baseline';
 var imgData = false;
 var h264_player = false;
 var h264_decoder = false;
@@ -57,9 +79,7 @@ var toUint8Array = function(parStr){
 
 function processFrame(imgString) {
 	if (imgString.data!='false') {
-		//if (input_data == 'h264_baseline') {
-			h264_player.decode(toUint8Array(imgString.data));
-		//}
+		h264_player.decode(toUint8Array(imgString.data));
 	} else {
 		console.log(imgString);
 	}
@@ -87,11 +107,11 @@ function processTelemetry(data) {
 	//console.log(data);
 	telemetry_obj.innerHTML = data.data;
 	data = JSON.parse(data.data);
-	Plotly.extendTraces('telemetryGraph', {
+	/*Plotly.extendTraces('telemetryGraph', {
 		x: [[data.px]],
 		y: [[data.py]],
 		z: [[data.pz]]
-	}, [0]);
+	}, [0]);*/
 }
 
 function connect() {
@@ -128,19 +148,13 @@ function connect() {
 
 
 function initCanvas() {
-//	if (input_data == 'h264_baseline') {
-		h264_player = new Player({
-			useWorker : true,
-			workerFile : "Decoder.js",
-			webgl: 'auto',
-			size: { width: 960, height: 720}
-		});
-		document.getElementById("videoFeed").appendChild(h264_player.canvas);
-//	} else {
-//		c = document.getElementById("tello_video_canvas");
-//		ctx = c.getContext("2d");
-//
-//	}
+	h264_player = new Player({
+		useWorker : true,
+		workerFile : "Decoder.js",
+		webgl: 'auto',
+		size: { width: 960, height: 720}
+	});
+	document.getElementById("videoFeed").appendChild(h264_player.canvas);
 }
 
 var keyboardMap = { };
@@ -157,10 +171,26 @@ function keyboardEvent(e) {
 }
 
 
+function initUI() {
+	// settings: exposure value
+	document.getElementById("settings-ev").onchange = function () {
+		sendCmd("ev",document.getElementById("settings-ev").value);
+	}
+}
+
+function sendCmd(_cmd, _value) {
+	if (ws_telemetry) {
+		ws_telemetry.send(JSON.stringify({ cmd: { cmd: _cmd, value: _value } }));
+	}
+}
+
+
+initUI();
 initKeyboard();
 initCanvas();
-init3D();
+//init3D();
 connect();
+
 
 </script>
 </body>

@@ -28,6 +28,9 @@ drone.tello_telemetry_output = function (data) { webclient.telemetry(data); };
 
 // lets go!
 drone.init();
+
+// browser -> webclient -> tello commands
+webclient.tello_cmd = function (data) { drone.tello_cmd(data); }
 ```
 
 ### Init
