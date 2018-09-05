@@ -105,13 +105,15 @@ function init3D() {
 
 function processTelemetry(data) {
 	//console.log(data);
-	telemetry_obj.innerHTML = data.data;
+	//telemetry_obj.innerHTML = data.data;
 	data = JSON.parse(data.data);
-	/*Plotly.extendTraces('telemetryGraph', {
-		x: [[data.px]],
-		y: [[data.py]],
-		z: [[data.pz]]
-	}, [0]);*/
+	if (Math.abs(data.px)>0.1 && Math.abs(data.py)>0.1 && Math.abs(data.pz)>0.1) {
+		Plotly.extendTraces('telemetryGraph', {
+			x: [[data.px]],
+			y: [[data.py]],
+			z: [[data.pz*-1]]
+		}, [0]);
+	}
 }
 
 function connect() {
@@ -188,7 +190,7 @@ function sendCmd(_cmd, _value) {
 initUI();
 initKeyboard();
 initCanvas();
-//init3D();
+init3D();
 connect();
 
 
