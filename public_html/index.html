@@ -54,6 +54,13 @@ var c,ctx;
 var imgData = false;
 var h264_player = false;
 var h264_decoder = false;
+var kMap = { };
+var stickData = {
+	roll     : 0,
+	pitch    : 0,
+	throttle : 0,
+	yaw      : 0
+};
 
 
 function initVideoFeedReceive() {
@@ -159,16 +166,42 @@ function initCanvas() {
 	document.getElementById("videoFeed").appendChild(h264_player.canvas);
 }
 
-var keyboardMap = { };
 function initKeyboard() {
 	document.body.onkeydown = document.body.onkeyup = function (e) { 
 		e.preventDefault();
-		keyboardMap[e.code] = (e.type=='keydown'?true:false); 
+		kMap[e.code] = (e.type=='keydown'?true:false); 
 		keyboardEvent(e);
 	};
 }
+
+
+var speed = 0.1;
 function keyboardEvent(e) {
-	console.log(keyboardMap);
+	//console.log(kMap);
+	if (kMap.Space === true && (kMap.ShiftLeft === true || kMap.ShiftRight === true)) {
+		kMap.Space = false;
+		sendCmd("takeoff", 0);
+	} else if (kMap.Space === true) {
+		sendCmd("land", 0);
+	}
+	if (kMap.KeyW === true || kMap.KeyA === true || kMap.KeyS === true || kMap.KeyD === true ||
+		kMap.ArrowUp === true || kMap.ArrowDown === true || kMap.ArrowLeft === true || kMap.ArrowRight === true) {
+			
+		stickData.yaw = speed*(kMap.KeyA === true?-1:(kMap.KeyD === true?1:0));
+		stickData.throttle = speed*(kMap.KeyS === true?-1:(kMap.KeyW === true?1:0));
+		stickData.roll = speed*(kMap.ArrowLeft === true?-1:(kMap.ArrowRight === true?1:0));
+		stickData.pitch = speed*(kMap.ArrowUp === true?-1:(kMap.ArrowDown === true?1:0));
+		
+		console.log(stickData);
+		sendCmd("stick", stickData);
+	} else {
+		stickData.yaw = 0;
+		stickData.throttle = 0;
+		stickData.roll = 0;
+		stickData.pitch = 0;
+		console.log(stickData);
+		sendCmd("stick", stickData);
+	}
 	return false;
 }
 
@@ -178,6 +211,16 @@ function initUI() {
 	document.getElementById("settings-ev").onchange = function () {
 		sendCmd("ev",document.getElementById("settings-ev").value);
 	}
+}
+
+function initPing() {
+	// ping backend every 0.5 seconds
+	setInterval(
+		function () {
+			sendCmd("ping", 0);
+		},
+		500
+	);
 }
 
 function sendCmd(_cmd, _value) {
@@ -191,6 +234,7 @@ initUI();
 initKeyboard();
 initCanvas();
 init3D();
+initPing();
 connect();
 
 
