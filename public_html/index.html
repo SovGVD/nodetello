@@ -175,7 +175,7 @@ function initKeyboard() {
 }
 
 
-var speed = 0.1;
+var speed = 0.3;
 function keyboardEvent(e) {
 	//console.log(kMap);
 	if (kMap.Space === true && (kMap.ShiftLeft === true || kMap.ShiftRight === true)) {
@@ -190,7 +190,7 @@ function keyboardEvent(e) {
 		stickData.yaw = speed*(kMap.KeyA === true?-1:(kMap.KeyD === true?1:0));
 		stickData.throttle = speed*(kMap.KeyS === true?-1:(kMap.KeyW === true?1:0));
 		stickData.roll = speed*(kMap.ArrowLeft === true?-1:(kMap.ArrowRight === true?1:0));
-		stickData.pitch = speed*(kMap.ArrowUp === true?-1:(kMap.ArrowDown === true?1:0));
+		stickData.pitch = speed*(kMap.ArrowDown === true?-1:(kMap.ArrowUp === true?1:0));
 		
 		console.log(stickData);
 		sendCmd("stick", stickData);

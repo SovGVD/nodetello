@@ -49,6 +49,16 @@ Web client must be available on http://127.0.0.1:8080 after `npm start` and show
 ## Convert video
 Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpeg -i TIMESTAMP.h264 -crf 20 video.mp4`
 
+## Flight
+ - `Shift` + `Space` - Takeoff
+ - `Space` - Land
+ - `ArrowUp` and `ArrowDown` - Pitch (forward/backward)
+ - `ArrowLeft` and `ArrowRight` - Roll (left/right)
+ - `W` and `S` - Throttle (Up/Down)
+ - `A` and `D` - Yaw (Rotate)
+
+Speed is limited.
+
 ## Flight data and log
 
 ### Flight data
