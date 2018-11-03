@@ -175,7 +175,7 @@ function initKeyboard() {
 }
 
 
-var speed = 0.3;
+var speed = 0.5;
 function keyboardEvent(e) {
 	//console.log(kMap);
 	if (kMap.Space === true && (kMap.ShiftLeft === true || kMap.ShiftRight === true)) {
@@ -230,8 +230,81 @@ function sendCmd(_cmd, _value) {
 }
 
 
+var gp = false;	// GamePad object
+var gpInterval = false;
+function initGamepad() {
+	window.addEventListener("gamepadconnected", gamepadConnectHandler);
+	window.addEventListener("gamepaddisconnected", gamepadDisconnectHandler);
+}
+
+function gamepadConnectHandler (e) {
+	gamepadAdd(e.gamepad);
+}
+
+function gamepadDisconnectHandler (e) {
+	gamepadRemove(e.gamepad);
+	sendCmd("stick", {
+		roll     : 0,
+		pitch    : 0,
+		throttle : 0,
+		yaw      : 0
+	});
+}
+
+function gamepadRemove(g) {
+	gp = false;
+}
+
+function gamepadAdd(g) {
+	console.log(g);
+	initGamePadEvents();
+	gp = g;
+}
+
+function initGamePadEvents() {
+	if (gpInterval) {
+		clearInterval(gpInterval);
+		initGamePadEvents();
+	} else {
+		setInterval(function () { gamepadData() }.bind(this), 100);
+	}
+}
+
+function gamepadData() {
+	gp = navigator.getGamepads()[0];
+	// axes mapping
+	/*
+		ax0 - yaw
+		ax1 - trottle
+		ax2 - roll
+		ax3 - pitch
+	*/
+	
+	// buttons (I use SHANWAN PS3/PC Gamepad (Vendor: 2563 Product: 0575))
+	/*
+		button0 - Y - land
+		button1 - B - land
+		button2 - A - land
+		button3 - X - land
+		button9 - start
+	*/
+	
+	if (gp.buttons[0].pressed == true || gp.buttons[1].pressed == true || gp.buttons[2].pressed == true || gp.buttons[3].pressed == true ) {
+		sendCmd("land", 0);
+	} else if (gp.buttons[9].pressed == true) {
+		sendCmd("takeoff", 0);
+	}
+		stickData.yaw = speed*gp.axes[0];
+		stickData.throttle = -speed*gp.axes[1];
+		stickData.roll = speed*gp.axes[2];
+		stickData.pitch = -speed*gp.axes[3];
+		sendCmd("stick", stickData);
+}
+
+
 initUI();
 initKeyboard();
+initGamepad();
 initCanvas();
 init3D();
 initPing();
