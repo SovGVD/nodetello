@@ -11,7 +11,9 @@ const NodeTello = require('./lib/nodetello.js');
 const NodeTello_webclient = require('./lib/nodetello_webclient.js');
 
 // init web client
-var webclient = new NodeTello_webclient();
+//var webclient = new NodeTello_webclient('ffmpeg');	// in-browser video
+var webclient = new NodeTello_webclient('mplayer');	// open mplayer window with low latency video
+
     webclient.init();
 
 // init drone
