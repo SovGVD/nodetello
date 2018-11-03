@@ -1,6 +1,10 @@
 # Ryze Tello drone Node.JS library
 Based on [PyTello](https://bitbucket.org/PingguSoft/pytello), [TelloLib](https://github.com/Kragrathea/TelloLib) and [the tello Go](https://github.com/SMerrony/tello)
 
+## WARNING
+
+Software in development and provided "as is". Use at your own risk. Safety first! Remove props before test!
+
 ## How to
 ```
 const NodeTello = require('./lib/nodetello.js');
@@ -50,6 +54,8 @@ Web client must be available on http://127.0.0.1:8080 after `npm start` and show
 Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpeg -i TIMESTAMP.h264 -crf 20 video.mp4`
 
 ## Flight
+
+### Keyboard
  - `Shift` + `Space` - Takeoff
  - `Space` - Land
  - `ArrowUp` and `ArrowDown` - Pitch (forward/backward)
@@ -57,7 +63,17 @@ Video feeds stored to `./video/TIMESTAMP.h264` and must be redecode, e.g. `ffmpe
  - `W` and `S` - Throttle (Up/Down)
  - `A` and `D` - Yaw (Rotate)
 
-Speed is limited.
+Speed is limited = 0.5
+
+### Gamepad/Joystick
+WARNING, used SHANWAN PS3/PC Gamepad (Vendor: 2563 Product: 0575) in Linux
+
+ - `Left Stick` - trottle and yaw (MODE2)
+ - `Right Stick` - pitch and roll (MODE2)
+ - `X`, `Y`, `A`, `B` - land
+ - `start` - takeoff
+
+Speed is limited = 0.5
 
 ## Flight data and log
 
